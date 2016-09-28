@@ -8,8 +8,9 @@
 UCLASS()
 class PONG_API ACameraDirector : public AActor
 {
-	GENERATED_BODY()
 	
+	GENERATED_BODY()
+		
 public:	
 	// Sets default values for this actor's properties
 	ACameraDirector();
@@ -20,6 +21,13 @@ public:
 	// Called every frame
 	virtual void Tick( float DeltaSeconds ) override;
 
-	
+	//allows the cameras to be seen and edited in the unreal engine
+	UPROPERTY(EditAnywhere)
+		AActor* CameraOne;
+
+	UPROPERTY(EditAnywhere)
+		AActor* CameraTwo;
+	float TimeToNextCameraChange;
+
 	
 };

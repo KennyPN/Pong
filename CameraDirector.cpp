@@ -2,6 +2,7 @@
 
 #include "Pong.h"
 #include "CameraDirector.h"
+#include "Kismet/GameplayStatics.h"
 
 
 // Sets default values
@@ -23,6 +24,25 @@ void ACameraDirector::BeginPlay()
 void ACameraDirector::Tick( float DeltaTime )
 {
 	Super::Tick( DeltaTime );
-
+	const float TimeBetweenCameraChanges = 2.0f;
+	const float SmoothBlendTime = 0.75f;
+	TimeToNextCameraChange -= DeltaTime;
+	if (TimeToNextCameraChange <= 0.0f)
+	{
+		TimeToNextCameraChange += TimeBetweenCameraChanges;
+		//finds actor that controls player
+		APlayerController* OurPlayerController = UGameplayStatics::GetPlayerController(this, 0);
+		if (OurPlayerController)
+		{
+			if ((OurPlayerController->GetViewTarget() != CameraTwo) && (CameraTwo != nullptr))
+			{
+				OurPlayerController->SetViewTarget(CameraOne);
+			}
+			else if ((OurPlayerController->GetViewTarget() != CameraTwo) && (CameraTwo != nullptr))
+			{
+				OurPlayerController->SetViewTargetWithBlend(CameraTwo, SmoothBlendTime);
+			}
+		}
+	}
 }
 
